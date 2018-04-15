@@ -1,0 +1,58 @@
+# Assignments
+my assignments
+#amalgamating all the csv file into one dataset
+csv_file_list <- list.files(path = "C:/Users/Owner/Downloads/NI Crime Data/", pattern = "*.csv", recursive = TRUE)
+csv_file_list
+combine_results <- function(csv_file_list) {
+    all_NI_data <- NULL
+    for (csv_file in csv_file_list) {
+        file <- read.csv(paste("C:/Users/Owner/Downloads/NI Crime Data/", csv_file, sep = ""), header = TRUE, stringsAsFactors = FALSE)
+        all_NI_data <- rbind(all_NI_data, file)
+     
+    }
+   return(all_NI_data)
+}
+#Saving all of the crime data
+ All_NI_Crime_Data <- combine_results(csv_file_list)
+ head(All_NI_Crime_Data)
+str(All_NI_Crime_Data)
+#Save this dataset into a csv file called AllNICrimeData.
+write.csv(All_NI_Crime_Data, file = "AllNICrimeData.csv", quote = FALSE, na = "", row.names = FALSE)
+AllNICrimeData <- read.csv(file = "C:/Users/Owner/Source/Repos/DataScienceShare-2018/Management deferrals - missing data/AllNICrimeData.csv", sep = ",", stringsAsFactors = FALSE)
+head(AllNICrimeData)
+str(AllNICrimeData)
+#Count and show the number of rows in the AllNICrimeData dataset.
+nrow(AllNICrimeData)
+str(AllNICrimeData)
+# remove the following attributes:CrimeID, Reported by, Falls within, LSOA code, LSOA name,last outcome and context
+AllNICrimeData_subset = AllNICrimeData[, c(2, 5, 6, 7, 10)]
+write.csv(AllNICrimeData_subset, file = "AllNICrimeData.csv", quote = FALSE, na = "", row.names = FALSE)
+str(AllNICrimeData_subset)
+head(AllNICrimeData_subset)
+# structure of the modified file
+AllNICrimeData <- read.csv(file = "C:/Users/Owner/Source/Repos/DataScienceShare-2018/Management deferrals - missing data/AllNICrimeData.csv", sep = ",", stringsAsFactors = FALSE)
+str(AllNICrimeData)
+head(AllNICrimeData)
+#Factorise the Crime type attribute. Show the modified structure.
+Crime.type <- factor(AllNICrimeData$'Crime.type', order = TRUE)
+AllNICrimeData$'Crime.type' <- Crime.type
+str(AllNICrimeData)
+head(AllNICrimeData)
+
+#Modifying the AllNICrimeData dataset so that the Location attribute contains only a street name.
+Location <- gsub("On or near ", "", as.character(AllNICrimeData$Location))
+AllNICrimeData$Location <- Location
+str(AllNICrimeData)
+head(AllNICrimeData)
+# Modify the resultant empty location attributes with a Record Not Found.
+AllNICrimeData$Location[AllNICrimeData$Location == ""] <- "Record Not Found"
+head(AllNICrimeData, 30)
+str(AllNICrimeData)
+#
+postcode_data <- read.csv("C:/Users/Owner/Source/Repos/DataScienceShare-2018/Management deferrals - missing data/CleanNIPostcodeData.csv")
+str(postcode_data)
+head(postcode_data, 10)
+
+
+
+
